@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from './Model.css'
+import classes from './Modal.css'
 
 
 const modal = (props)=>{
