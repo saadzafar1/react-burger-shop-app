@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import Aux from '../../hoc/Aux'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 
@@ -40,12 +39,12 @@ removeIngredientHandler = ()=>{
 
     render(){
         return (
-            <Aux>
+            <div>
                 <Burger ingredients={this.state.ingredients} />
                 <div>
                     <BuildControls ingredientAdded={this.addIngredientHandler} />
                 </div>
-            </Aux>
+            </div>
         )
     }
 }
