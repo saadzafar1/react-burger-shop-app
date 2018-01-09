@@ -75,6 +75,9 @@ purchaseCancelHandler = ()=>{
     this.setState({purchasing:false})    
 }
 
+purchaseContinueHandler = ()=>{
+    alert("You bought this burger")
+}
     render(){
         const disableInfo = {
             ...this.state.ingredients
@@ -85,7 +88,10 @@ purchaseCancelHandler = ()=>{
         return (
             <div>
                 <Modal show={this.state.purchasing} modalClosed={this.purchaseCancelHandler}>
-                    <OrderSummary ingredients={this.state.ingredients} />
+                    <OrderSummary continue={this.purchaseContinueHandler} 
+                    cancelled={this.purchaseCancelHandler} 
+                    ingredients={this.state.ingredients}
+                    price={this.state.totalPrice} />
                 </Modal>
                 <Burger ingredients={this.state.ingredients} />
                 <div>
