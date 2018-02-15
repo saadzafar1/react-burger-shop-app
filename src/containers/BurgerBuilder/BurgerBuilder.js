@@ -86,29 +86,38 @@ purchaseCancelHandler = ()=>{
 
 purchaseContinueHandler = ()=>{
     this.setState({loading:true})
-    const order = {
-        ingredients: this.state.ingredients,
-        price: this.state.totalPrice,
-        customer: {
-            name: 'Saad',
-            address:{
-                street: 'House#213-A, St#9',
-                zipCode: '54000',
-                country: 'Pakistan'
-            },
-            email: 'saadie.111@gmail.com'
-        },
-        deliveryMethod: 'fastest'
+    // const order = {
+    //     ingredients: this.state.ingredients,
+    //     price: this.state.totalPrice,
+    //     customer: {
+    //         name: 'Saad',
+    //         address:{
+    //             street: 'House#213-A, St#9',
+    //             zipCode: '54000',
+    //             country: 'Pakistan'
+    //         },
+    //         email: 'saadie.111@gmail.com'
+    //     },
+    //     deliveryMethod: 'fastest'
+    // }
+    // axios.post('/orders.json',order)
+    // .then(response => {
+    //     this.setState({loading:false,purchasing:false})
+    //     console.log(response)
+    // })
+    // .catch(error => {
+    //     this.setState({loading:false,purchasing:false})
+    //     console.log(error)
+    // })
+    const queryParams =[];
+    for(let i in this.state.ingredients){
+        queryParams.push(encodeURIComponent(i)+'='+encodeURIComponent(this.state.ingredients[i]));
     }
-    axios.post('/orders.json',order)
-    .then(response => {
-        this.setState({loading:false,purchasing:false})
-        console.log(response)
-    })
-    .catch(error => {
-        this.setState({loading:false,purchasing:false})
-        console.log(error)
-    })
+    const queryString = queryParams.join('&');
+    this.props.history.push({
+        pathname:'/checkout',
+        search: '?'+queryString
+    });
 }
     render(){
         const disableInfo = {
