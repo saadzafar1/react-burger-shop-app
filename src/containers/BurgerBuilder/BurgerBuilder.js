@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Burger from '../../components/Burger/Burger';
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
@@ -6,8 +7,8 @@ import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 import axios from '../../axios-orders';
-import * as actionTypes from '../../store/actions';
-import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index'; 
+
 
 class BurgerBuilder extends Component{
     state={
@@ -35,6 +36,7 @@ purchaseCancelHandler = ()=>{
 }
 
 purchaseContinueHandler = ()=>{
+    this.props.onInitPurchase();
     this.props.history.push('/checkout');
 }
     render(){
@@ -72,15 +74,16 @@ purchaseContinueHandler = ()=>{
 }
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients,
-        totalPrice: state.totalPrice
+        ings: state.burgerBuilder.ingredients,
+        totalPrice: state.burgerBuilder.totalPrice
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return{
-        onIngredientAdded: (ingName) => dispatch({type:actionTypes.ADD_INGREDIENT,ingredientName:ingName}),
-        onIngredientRemoved: (ingName) => dispatch({type:actionTypes.REMOVE_INGREDIENT,ingredientName:ingName})
+        onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
+        onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
+        onInitPurchase: () => dispatch(actions.purchaseInit())
     }
 }
 
