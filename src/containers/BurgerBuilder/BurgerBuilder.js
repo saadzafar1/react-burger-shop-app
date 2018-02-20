@@ -28,7 +28,12 @@ updatePurchase = (ingrds)=>{
 }
 
 purchaseHandler =()=>{
-    this.setState({purchasing:true})
+    if(this.props.isAuthenticated){
+        this.setState({purchasing:true});
+    } else {
+        this.props.onSetAuthRedirectPath('/checkout');
+        this.props.history.push('/auth');
+    }
 }
 
 purchaseCancelHandler = ()=>{
@@ -61,7 +66,9 @@ purchaseContinueHandler = ()=>{
                 </Modal>
                 <Burger ingredients={this.props.ings} />
                 <div>
-                    <BuildControls ingredientAdded={this.props.onIngredientAdded} 
+                    <BuildControls 
+                    isAuth={this.props.isAuthenticated}
+                    ingredientAdded={this.props.onIngredientAdded} 
                     ingredientRemoved={this.props.onIngredientRemoved}
                     disabled={disableInfo} 
                     price={this.props.totalPrice}
@@ -75,7 +82,8 @@ purchaseContinueHandler = ()=>{
 const mapStateToProps = state => {
     return {
         ings: state.burgerBuilder.ingredients,
-        totalPrice: state.burgerBuilder.totalPrice
+        totalPrice: state.burgerBuilder.totalPrice,
+        isAuthenticated: state.auth.token !== null
     }
 }
 
@@ -83,7 +91,8 @@ const mapDispatchToProps = dispatch => {
     return{
         onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
         onIngredientRemoved: (ingName) => dispatch(actions.removeIngredient(ingName)),
-        onInitPurchase: () => dispatch(actions.purchaseInit())
+        onInitPurchase: () => dispatch(actions.purchaseInit()),
+        onSetAuthRedirectPath: (path) => dispatch(actions.setAuthRedirectPath(path))
     }
 }
 
